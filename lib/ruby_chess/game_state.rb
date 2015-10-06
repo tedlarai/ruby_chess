@@ -1,15 +1,25 @@
 module RubyChess
+  # end game : turn active_player to nil
   class GameState
-    attr_accessor :board, :moves, :captured_pieces
+    attr_accessor :board, :moves, :captured_pieces, :active_player
     def initialize
       @board = Array.new(8) { Array.new(8) }
       @moves = Array.new
       @captured_pieces = Array.new
+      @active_player = "white"
       populate_board
     end
 
-    def active_player
-      # @moves.last.piece.color.change_color
+    def other_color(color)
+      if color == "white"
+        "black"
+      else
+        "white"
+      end
+    end
+
+    def switch_active_player
+      @active_player = other_color(@active_player)
     end
 
     def populate_board

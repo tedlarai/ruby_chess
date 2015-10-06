@@ -8,18 +8,20 @@ module RubyChess
       @game_state = game_state
     end
 
-    def update_view(message)
+    def update_view(message = "")
+      @message = message
       system 'clear'
-      populate_template(message)
+      populate_template
       puts @filled_template
     end
 
-    def populate_template(message)
+    def populate_template
       @filled_template = @template.dup
-      @filled_template.sub!("message", "#{message}")
+      @filled_template.sub!("message", "#{@message}")
       populate_pieces
       populate_captured_pieces
       populate_last_moves
+      populate_prompt
     end
 
     def populate_pieces
@@ -71,6 +73,14 @@ module RubyChess
       while index < 10
         @filled_template.sub!("t#{index}", "")
         index += 1
+      end
+    end
+
+    def populate_prompt
+      if @game_state.active_player
+        @filled_template.sub!("prompt", "#{@game_state.active_player.capitalize}, enter your command:\n")
+      else
+        @filled_template.sub!("prompt", "Press any key to return to menu\n")
       end
     end
 
