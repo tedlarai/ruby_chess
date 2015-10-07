@@ -26,8 +26,8 @@ module RubyChess
 
     def populate_pieces
       ("A".."H").each_with_index do |col, col_index|
-        (1..8).each_with_index do |row, row_index|
-          piece = @game_state.board[col_index][row_index]
+        (1..8).each do |row|
+          piece = @game_state.board[[col_index + 1, row]]
           if piece.nil?
             @filled_template.sub!("#{col}#{row}", "  ")
           else

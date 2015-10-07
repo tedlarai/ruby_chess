@@ -4,11 +4,18 @@ module RubyChess
     include MoveValidator
     attr_accessor :board, :moves, :captured_pieces, :active_player
     def initialize
-      @board = Array.new(8) { Array.new(8) }
+      @board = gen_board
       @moves = Array.new
       @captured_pieces = Array.new
       @active_player = "white"
-      populate_board
+      fill_board
+    end
+
+    def gen_board
+      rows = Array(1..8)
+      cols = Array(1..8)
+      tiles = cols.product(rows)
+      Hash[tiles.map { |tile| [tile, nil]}]
     end
 
     def other_color(color)
@@ -23,28 +30,27 @@ module RubyChess
       @active_player = other_color(@active_player)
     end
 
-    def populate_board
-      @board.map! do |col|
-        col[1] = Pieces::Pawn.new("white")
-        col[6] = Pieces::Pawn.new("black")
-        col
+    def fill_board
+      (1..8).each do |col|
+        @board[[col,2]] = Pieces::Pawn.new("white")
+        @board[[col,7]] = Pieces::Pawn.new("black")
       end
-      @board[0][0] = Pieces::Rook.new("white")
-      @board[1][0] = Pieces::Knight.new("white")
-      @board[2][0] = Pieces::Bishop.new("white")
-      @board[3][0] = Pieces::Queen.new("white")
-      @board[4][0] = Pieces::King.new("white")
-      @board[5][0] = Pieces::Bishop.new("white")
-      @board[6][0] = Pieces::Knight.new("white")
-      @board[7][0] = Pieces::Rook.new("white")
-      @board[0][7] = Pieces::Rook.new("black")
-      @board[1][7] = Pieces::Knight.new("black")
-      @board[2][7] = Pieces::Bishop.new("black")
-      @board[3][7] = Pieces::Queen.new("black")
-      @board[4][7] = Pieces::King.new("black")
-      @board[5][7] = Pieces::Bishop.new("black")
-      @board[6][7] = Pieces::Knight.new("black")
-      @board[7][7] = Pieces::Rook.new("black")
+      @board[[1, 1]] = Pieces::Rook.new("white")
+      @board[[2, 1]] = Pieces::Knight.new("white")
+      @board[[3, 1]] = Pieces::Bishop.new("white")
+      @board[[4, 1]] = Pieces::Queen.new("white")
+      @board[[5, 1]] = Pieces::King.new("white")
+      @board[[6, 1]] = Pieces::Bishop.new("white")
+      @board[[7, 1]] = Pieces::Knight.new("white")
+      @board[[8, 1]] = Pieces::Rook.new("white")
+      @board[[1, 8]] = Pieces::Rook.new("black")
+      @board[[2, 8]] = Pieces::Knight.new("black")
+      @board[[3, 8]] = Pieces::Bishop.new("black")
+      @board[[4, 8]] = Pieces::Queen.new("black")
+      @board[[5, 8]] = Pieces::King.new("black")
+      @board[[6, 8]] = Pieces::Bishop.new("black")
+      @board[[7, 8]] = Pieces::Knight.new("black")
+      @board[[8, 8]] = Pieces::Rook.new("black")
     end
 
     def proccess_move(command)
@@ -60,8 +66,8 @@ module RubyChess
       if ["0-0", "0-0-0"].include?(@command) #castling
 
       else
-        format_move
-        piece_to_move = @board[@move[0][0]][@move[0][1]]
+        @move = format_move
+        piece_to_move = @board[@move[0]]
 
         validators_list = [
                            ["move_to_different_tile?"],
@@ -79,8 +85,8 @@ module RubyChess
     end
 
     def format_move
-      @move = @command.tr("1-8", "0-7").tr("a-h", "0-7").split("-")
-      @move.map!{|x| x.split("").map{|z| z.to_i}}
+      move = @command.tr("a-h", "1-8").split("") - ["-"] # creates [from_col, from_row, to_col, to_row]
+      [[move[0].to_i, move[1].to_i], [move[2].to_i, move[3].to_i]] # [from, to]
     end
 
     def execute_move

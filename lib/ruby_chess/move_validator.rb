@@ -29,11 +29,11 @@ module RubyChess
     end
 
     def capture_try?
-      !@board[@move[1][0]][@move[1][1]].nil?
+      !@board[@move[1]].nil?
     end
 
     def not_capturing_own_piece?(*args)
-      unless capture_try? &&  @board[@move[1][0]][@move[1][1]].color != @active_player
+      unless capture_try? &&  @board[@move[1]].color != @active_player
         {validity: false, message: Messages.capturing_own_piece(@command)}
       else
         default_response
