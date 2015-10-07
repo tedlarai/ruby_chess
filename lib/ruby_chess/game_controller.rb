@@ -19,11 +19,19 @@ module RubyChess
     def get_command
       loop do
         command = gets.chomp
-        if (command =~ /\A[a-z]\d[-][a-z]\d\z/ || command == "0-0" || command == "0-0-0")
-          @game_state.proccess_move
-          break
+        if (command =~ /\A[a-h][1-8][-][a-h][1-8]\z/ || command == "0-0" || command == "0-0-0")
+          validity_with_message = @game_state.proccess_move(command)
+          @message = validity_with_message[:message]
+          if validity_with_message[:validity]
+            break
+          else
+            @ui.update_view(@message)
+            next
+          end
         elsif command == "s"
           save_game
+          @message = Messages.saved_game
+          @ui.update_view(@message)
           next
         elsif command == "q"
           exit

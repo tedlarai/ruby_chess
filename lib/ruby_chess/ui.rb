@@ -8,11 +8,11 @@ module RubyChess
       @game_state = game_state
     end
 
-    def update_view(message = "")
+    def update_view(message)
       @message = message
       system 'clear'
       populate_template
-      puts @filled_template
+      print @filled_template
     end
 
     def populate_template
