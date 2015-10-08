@@ -10,37 +10,37 @@ module Pieces
       end
     end
 
-    # def move_legal?(from, to) #hash keys{:from_row :from_col :from_row :to_col}
-    #   if @color == "white"
-    #     if from[0] == 2#starting position
-    #      (to[0] == from[0] + 1 || to[0] == from[0] + 2) && to[1] == from[1]
-    #     else #moved
-    #       to[0] == from[0] + 1 && to[1] == from[1]
-    #     end
-    #   else #black
-    #     if from[0] == 7 #starting position
-    #       (to[0] == from[0] - 1 || to[0] == from[0] - 2) && to[1] == from[1]
-    #     else #moved
-    #       to[0] == from[0] - 1 && to[1] == from[1]
-    #     end
-    #   end
-    # end
+    def move_legal?(from, to)
+      if @color == "white"
+        if from[1] == 2#starting position
+         (to[1] == from[1] + 1 || to[1] == from[1] + 2) && to[0] == from[0]
+        else #moved
+          to[1] == from[1] + 1 && to[0] == from[0]
+        end
+      else #black
+        if from[1] == 7 #starting position
+          (to[1] == from[1] - 1 || to[1] == from[1] - 2) && to[0] == from[0]
+        else #moved
+          to[1] == from[1] - 1 && to[0] == from[0]
+        end
+      end
+    end
+
+    def capture_legal?(from, to)
+      if @color == 'white'
+        to[1] == from[1] + 1 && (to[0] == from[0] + 1 || to[0] == from[0] - 1)
+      else # black
+        to[1] == from[1] - 1 && (to[0] == from[0] + 1 || to[0] == from[0] - 1)
+      end
+    end
     #
-    # def capture_legal?(from, to)
-    #   if @color == 'white'
-    #     to[0] == from[0] + 1 && (to[1] == from[1] + 1 || to[1] == from[1] - 1)
-    #   else#black
-    #     to[0] == from[0] - 1 && (to[1] == from[1] + 1 || to[1] == from[1] - 1)
-    #   end
-    # end
-    # 
     # def path(from, to)
     #   path = []
-    #   if (from[0]-to[0]).abs == 2
-    #     path_row = (to[0]-from[0])/2 + from[0]
-    #     path << [path_row, from[1]]
+    #   if (from[1]-to[1]).abs == 2
+    #     path_row = (to[1]-from[1])/2 + from[1]
+    #     path << [path_row, from[0]]
     #   end
-    #   return path
+    #   path
     # end
   end
 end

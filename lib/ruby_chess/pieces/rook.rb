@@ -10,13 +10,13 @@ module Pieces
       end
     end
 
-  #  def move_legal?(from, to)
-  #    from[0] == to[0] || from[1] == to[1]
-  #  end
+  def move_legal?(from, to)
+    from[0] == to[0] || from[1] == to[1]
+  end
 
-  #  def capture_legal?(from, to)
-  #    move_legal?(from, to)
-  #  end
+  def capture_legal?(from, to)
+    move_legal?(from, to)
+  end
 
   #  def path(from, to)
   #    path = []

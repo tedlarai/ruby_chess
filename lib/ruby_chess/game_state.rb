@@ -73,11 +73,13 @@ module RubyChess
                            ["move_to_different_tile?"],
                            ["tile_of_origin_has_a_piece?", piece_to_move],
                            ["piece_has_same_color_as_player?", piece_to_move],
-                           ["not_capturing_own_piece?"]
+                           ["not_capturing_own_piece?"],
+                           ["piece_capable_of_move?", piece_to_move],
+                           ["not_jumping_other_pieces?", piece_to_move]
                           ]
         validity_with_message = {}
-        validators_list.detect do |method|
-          validity_with_message = send(method[0], method[1])
+        validators_list.detect do |method, args|
+          validity_with_message = send(method, args)
           !validity_with_message[:validity]
         end
       end

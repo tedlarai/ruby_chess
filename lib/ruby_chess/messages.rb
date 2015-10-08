@@ -29,7 +29,19 @@ module RubyChess
     end
 
     def self.capturing_own_piece(command)
-      invalid_move_phrase(command) + "Cannot capture piece at #{command.split("-")[1]}, it's yours."      
+      invalid_move_phrase(command) + "Cannot capture piece at #{command.split("-")[1]}, it's yours."
+    end
+
+    def self.piece_not_capable_of_move(piece, command)
+      invalid_move_phrase(command) + "#{piece.class.to_s[8..-1]} not capable of this move."
+    end
+
+    def self.piece_not_capable_of_capture(piece, command)
+      invalid_move_phrase(command) + "#{piece.class.to_s[8..-1]} not capable of this capture."
+    end
+
+    def self.piece_cannot_jump(piece, tile, command)
+      invalid_move_phrase(command) + "#{piece.class.to_s[8..-1]} cannot jump piece at #{tile[0].to_s.tr("1-8", "a-h")}#{tile[1]}."
     end
 
   end

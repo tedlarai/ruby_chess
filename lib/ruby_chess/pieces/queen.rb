@@ -10,15 +10,15 @@ module Pieces
       end
     end
 
-  #  def move_legal?(from, to)
-  #    l_bishop = from[0]-to[0] == from[1]-to[1] || from[0]-to[0] == -(from[1]-to[1])
-  #    l_rook = from[0] == to[0] || from[1] == to[1]
-  #    l_bishop || l_rook
-  #  end
-  #
-  #  def capture_legal?(from, to)
-  #    move_legal?(from, to)
-  #  end
+  def move_legal?(from, to)
+    l_bishop = from[0]-to[0] == from[1]-to[1] || from[0]-to[0] == -(from[1]-to[1])
+    l_rook = from[0] == to[0] || from[1] == to[1]
+    l_bishop || l_rook
+  end
+  
+  def capture_legal?(from, to)
+    move_legal?(from, to)
+  end
   #
   #  def path(from, to)
   #    path = []
