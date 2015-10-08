@@ -47,5 +47,9 @@ module RubyChess
     def self.king_near_other_king(command)
       invalid_move_phrase(command) + "King cannot be this near to the other king."
     end
+
+    def self.own_king_in_check(command)
+      invalid_move_phrase(command) + "Leaving own king in check."
+    end
   end
 end
