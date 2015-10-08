@@ -33,14 +33,14 @@ module Pieces
         to[1] == from[1] - 1 && (to[0] == from[0] + 1 || to[0] == from[0] - 1)
       end
     end
-    #
-    # def path(from, to)
-    #   path = []
-    #   if (from[1]-to[1]).abs == 2
-    #     path_row = (to[1]-from[1])/2 + from[1]
-    #     path << [path_row, from[0]]
-    #   end
-    #   path
-    # end
+
+    def path(from, to)
+      if (from[1]-to[1]).abs == 2 # 2 tile advance
+        path_row = (to[1]-from[1])/2 + from[1]
+        [from[0], path_row]
+      else # normal move
+        []
+      end
+    end
   end
 end

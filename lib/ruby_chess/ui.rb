@@ -57,16 +57,16 @@ module RubyChess
     def populate_last_moves
       if @game_state.moves.count.odd?
         last_moves = @game_state.moves.last(19)
-        last_moves << "     "
+        last_moves << "       "
       else
         last_moves = @game_state.moves.last(20)
       end
-      last_turn = @game_state.moves.count + 1 / 2
+      last_turn = (@game_state.moves.count + 1) / 2
       index = 0
 
       until (last_black_move = last_moves.pop).nil?
         last_white_move = last_moves.pop
-        @filled_template.sub!("t#{index}", "#{last_turn-index}  #{last_white_move.center(5)}  #{last_black_move.center(5)}")
+        @filled_template.sub!("t#{index}", "#{last_turn-index}  #{last_white_move.center(7)}  #{last_black_move.center(7)}")
         index += 1
       end
 

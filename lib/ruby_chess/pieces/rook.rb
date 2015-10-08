@@ -10,24 +10,20 @@ module Pieces
       end
     end
 
-  def move_legal?(from, to)
-    from[0] == to[0] || from[1] == to[1]
-  end
+    def move_legal?(from, to)
+      from[0] == to[0] || from[1] == to[1]
+    end
 
-  def capture_legal?(from, to)
-    move_legal?(from, to)
-  end
+    def capture_legal?(from, to)
+      move_legal?(from, to)
+    end
 
-  #  def path(from, to)
-  #    path = []
-  #    if from[0] == to[0]#same row
-  #      aux = Bishop.path_range(from[1], to[1])
-  #      aux.each {|x| path << [from[0], x]}
-  #    else#same col
-  #      aux = Bishop.path_range(from[0], to[0])
-  #      aux.each {|x| path << [x,from[1]]}
-  #    end
-  #    return path
-  #  end
+    def path(from, to)
+      if from[1] == to[1] # same row
+        Pieces.path_range(from[0], to[0]).map{|col| [col, from[1]]}
+      else # same col
+        Pieces.path_range(from[1], to[1]).map{|row| [from[0], row]}
+      end
+    end
   end
 end

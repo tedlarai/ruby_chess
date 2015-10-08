@@ -44,5 +44,8 @@ module RubyChess
       invalid_move_phrase(command) + "#{piece.class.to_s[8..-1]} cannot jump piece at #{tile[0].to_s.tr("1-8", "a-h")}#{tile[1]}."
     end
 
+    def self.king_near_other_king(command)
+      invalid_move_phrase(command) + "King cannot be this near to the other king."
+    end
   end
 end

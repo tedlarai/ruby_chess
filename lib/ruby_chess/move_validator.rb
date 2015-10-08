@@ -67,5 +67,22 @@ module RubyChess
       default_response
     end
 
+    def leaving_tile_between_kings?(piece)
+      to = @move[1]
+      if piece.instance_of?(Pieces::King)
+        other_king_position = nil
+        @board.each do |k,v|
+          if (v.instance_of?(King) && !(v.equal?(piece)))
+            other_king_position = k
+            break
+          end
+        end
+        if (other_king_position[0] - to[0]).abs <= 1 || (other_king_position[1] - to[1]).abs <= 1
+          return {validity: false, message: Messages.king_near_other_king(@command)}
+        end
+      end
+      default_response
+    end
+
   end
 end

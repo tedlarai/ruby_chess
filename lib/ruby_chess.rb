@@ -11,6 +11,8 @@ require "ruby_chess/pieces/knight"
 require "ruby_chess/pieces/bishop"
 require "ruby_chess/pieces/queen"
 require "ruby_chess/pieces/king"
+require "ruby_chess/pieces/pieces"
+
 
 include RubyChess
 GameController.new

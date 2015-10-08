@@ -75,7 +75,9 @@ module RubyChess
                            ["piece_has_same_color_as_player?", piece_to_move],
                            ["not_capturing_own_piece?"],
                            ["piece_capable_of_move?", piece_to_move],
-                           ["not_jumping_other_pieces?", piece_to_move]
+                           ["not_jumping_other_pieces?", piece_to_move],
+                           ["leaving_tile_between_kings?", piece_to_move],
+                           # ["not_leaving_own_king_in_check?"]
                           ]
         validity_with_message = {}
         validators_list.detect do |method, args|
@@ -93,6 +95,12 @@ module RubyChess
 
     def execute_move
       # update board, moves and captured_pieces, and ## or get_command ui message
+      if @board[@move[1]] # destination is occupied -> capture
+        @captured_pieces << @board[@move[1]]
+        @command.sub!("-", " x ")
+      end
+      @moves << @command.sub("-", " - ")
+      @board[@move[1]], @board[@move[0]] = @board[@move[0]], nil
     end
   end
 end
