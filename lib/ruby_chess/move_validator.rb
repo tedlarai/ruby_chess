@@ -29,7 +29,6 @@ module RubyChess
     end
 
     def capture_try?
-      print (!@board[@move[1]].nil?)
       !@board[@move[1]].nil?
     end
 

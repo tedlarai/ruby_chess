@@ -1,6 +1,7 @@
 $: << File.dirname(__FILE__)
 
 require "ruby_chess/move_validator"
+require "ruby_chess/move_proccessor"
 require "ruby_chess/game_controller"
 require "ruby_chess/game_state"
 require "ruby_chess/messages"
