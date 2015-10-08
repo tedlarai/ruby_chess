@@ -51,5 +51,21 @@ module RubyChess
     def self.own_king_in_check(command)
       invalid_move_phrase(command) + "Leaving own king in check."
     end
+
+    def self.successful_move(command)
+      "Moved successfully: \"#{command}\""
+    end
+
+    def self.victory(player)
+      "\n   Checkmate!! Nice victory, #{player.capitalize}!!"
+    end
+
+    def self.draw
+      "\n   What a pair of fierce competitors! It is a draw!"
+    end
+
+    def check
+      "\n   Whoa, nice move! Check!"
+    end
   end
 end

@@ -80,7 +80,7 @@ module RubyChess
       if @game_state.active_player
         @filled_template.sub!("prompt", "#{@game_state.active_player.capitalize}, enter your command:\n")
       else
-        @filled_template.sub!("prompt", "Press any key to return to menu\n")
+        @filled_template.sub!("prompt", "Game over. Press 'enter' to return to menu\n:")
       end
     end
 

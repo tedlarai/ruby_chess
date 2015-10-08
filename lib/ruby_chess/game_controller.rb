@@ -44,12 +44,32 @@ module RubyChess
     end
 
     def turn_results
-
+      delivered_check = @game_state.delivered_check?
+      game_over = @game_state.game_over?
+      if game_over
+        if delivered_check # victory
+          @message += Messages.victory(@game_state.active_player)
+        else # draw
+          @message += Messages.draw
+        end
+        @game_state.active_player = nil
+        @ui.update_view(@message)
+        gets
+        quit_to_menu
+      else # game_not_over
+        if delivered_check
+          @message += Messages.check
+        end
+      end
     end
 
     def save_game
       # save the game
       # update_view
+    end
+
+    def quit_to_menu
+      exit
     end
   end
 end

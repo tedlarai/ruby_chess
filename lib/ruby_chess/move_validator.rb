@@ -1,7 +1,32 @@
 module RubyChess
   module MoveValidator
+    def move_validity_with_message(player = @active_player)
+      if ["0-0", "0-0-0"].include?(@command) #castling
+        # blabla
+      else
+        piece_to_move = @board[@move[0]]
+
+        validators_list = [
+                           ["move_to_different_tile?"],
+                           ["tile_of_origin_has_a_piece?", piece_to_move],
+                           ["piece_has_same_color_as_player?", piece_to_move, player],
+                           ["not_capturing_own_piece?", player],
+                           ["piece_capable_of_move?", piece_to_move],
+                           ["not_jumping_other_pieces?", piece_to_move],
+                           ["leaving_tile_between_kings?", piece_to_move],
+                           ["not_leaving_own_king_in_check?", player]
+                          ]
+        validity_with_message = {}
+        validators_list.detect do |method, arg1, arg2|
+          validity_with_message = send(method, arg1, arg2)
+          !validity_with_message[:validity]
+        end
+      end
+      validity_with_message
+    end
+
     def default_response
-      { validity: true, message: "Free to make this move" }
+      { validity: true, message: Messages.successful_move(@command) }
     end
 
     def move_to_different_tile?(*args)

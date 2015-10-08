@@ -53,5 +53,49 @@ module RubyChess
       @board[[7, 8]] = Pieces::Knight.new("black")
       @board[[8, 8]] = Pieces::Rook.new("black")
     end
+
+    def king_in_check?(player)
+      other_player = other_color(player)
+      @board.each do |k,v|
+        if !v.nil? && v.color == other_player
+          save_move = @move.dup
+          @move = [k, king_position(player)]
+          free_to_attack_the_king = move_validity_with_message(other_player)
+          @move = save_move
+          if free_to_attack_the_king[:validity]
+            return true
+          end
+        end
+      end
+      false
+    end
+
+    def king_position(player)
+      @board.each do |k,v|
+        if v.instance_of?(Pieces::King) && v.color == player
+          return k
+        end
+      end
+    end
+
+    def delivered_check?
+      king_in_check?(other_color(@active_player))
+    end
+
+    def game_over?
+      !has_legal_moves?(other_color(@active_player))
+    end
+
+    def has_legal_moves?(player)
+      all_moves = @board.keys.product(@board.keys)
+      all_moves.each do |move|
+        @move = move
+        if move_validity_with_message(player)[:validity]
+          return true
+        end          
+      end
+      false
+    end
+
   end
 end
