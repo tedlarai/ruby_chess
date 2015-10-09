@@ -9,6 +9,7 @@ module RubyChess
       @moves = Array.new
       @captured_pieces = Array.new
       @active_player = "white"
+      @enpassant = nil
       fill_board
     end
 
@@ -92,7 +93,7 @@ module RubyChess
         @move = move
         if move_validity_with_message(player)[:validity]
           return true
-        end          
+        end
       end
       false
     end

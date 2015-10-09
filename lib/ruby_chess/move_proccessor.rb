@@ -12,7 +12,7 @@ module RubyChess
 
     def format_move
       if ["0-0", "0-0-0"].include?(@command) #castling
-
+        @command.dup
       else
         move = @command.tr("a-h", "1-8").split("") - ["-"] # creates [from_col, from_row, to_col, to_row]
         [[move[0].to_i, move[1].to_i], [move[2].to_i, move[3].to_i]] # [from, to]
@@ -20,18 +20,46 @@ module RubyChess
     end
 
     def execute_move
-      # update board, moves and captured_pieces, and ## or get_command ui message
-      if @board[@move[1]] # destination is occupied -> capture
-        @captured_pieces << @board[@move[1]]
-        @command.sub!("-", " x ")
+      if @command == "0-0"
+        @moves << @command
+        short_castling
+      elsif @command == "0-0-0"
+        @moves << @command
+        long_castling
+      elsif # enpassant
+
+      else # not castling nor enpassant
+        if @board[@move[1]] # destination is occupied -> capture
+          @captured_pieces << @board[@move[1]]
+          @command.sub!("-", " x ")
+        end
+        @moves << @command.sub("-", " - ")
+        change_pieces_position
+        verify_and_update_enpassant_tile
       end
-      @moves << @command.sub("-", " - ")
-      change_pieces_position
     end
 
     def change_pieces_position
       @board[@move[1]], @board[@move[0]] = @board[@move[0]], nil
     end
 
+    def verify_and_update_enpassant_tile
+      piece = @board[@move[1]]
+      if piece.class == Pieces::Pawn || !piece.path(@move[0], @move[1]).empty?
+        @enpassant = path[0]
+      else
+        @enpassant = nil
+      end
+    end
+
+    def short_castling
+      @active_player == "white" ? row = 1 : row = 8
+      @board[[5, row]], @board[[6, row]], @board[[7, row]], @board[[8, row]] = nil, @board[[8, row]], @board[[5, row]], nil
+    end
+
+    def long_castling
+      @active_player == "white" ? row = 1 : row = 8
+      @board[[5, row]], @board[[4, row]], @board[[3, row]], @board[[1, row]] = nil, @board[[1, row]], @board[[5, row]], nil
+    end
   end
 end

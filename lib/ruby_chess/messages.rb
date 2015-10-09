@@ -64,8 +64,32 @@ module RubyChess
       "\n   What a pair of fierce competitors! It is a draw!"
     end
 
-    def check
+    def self.check
       "\n   Whoa, nice move! Check!"
+    end
+
+    def self.king_moved(command)
+      invalid_move_phrase(command) + "Cannot castle, king already moved."
+    end
+
+    def self.rook_moved_or_captured(command)
+      invalid_move_phrase(command) + "Cannot castle, rook already moved or was captured."
+    end
+
+    def self.piece_between_king_and_rook(command, piece)
+      invalid_move_phrase(command) + "Cannot castle, #{piece.class.to_s[8..-1]} is on the way."
+    end
+
+    def self.already_castled(command)
+      invalid_move_phrase(command) + "Already castled."
+    end
+
+    def self.king_would_be_attacked(command, tile)
+      invalid_move_phrase(command) + "Cannot castle, king would be attacked at #{tile[0].to_s.tr("1-8", "a-h")}#{tile[1]}."
+    end
+
+    def self.king_under_attack(command)
+      invalid_move_phrase(command) + "Cannot castle, king under attack!"
     end
   end
 end
