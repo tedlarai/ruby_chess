@@ -32,6 +32,10 @@ module RubyChess
       invalid_move_phrase(command) + "Cannot capture piece at #{command.split("-")[1]}, it's yours."
     end
 
+    def self.capturing_own_piece_enpassant(command, to)
+      invalid_move_phrase(command) + "Cannot capture piece at #{to[0].to_s.tr("1-8", "a-h")}#{to[1]}, it's yours."
+    end
+
     def self.piece_not_capable_of_move(piece, command)
       invalid_move_phrase(command) + "#{piece.class.to_s[8..-1]} not capable of this move."
     end

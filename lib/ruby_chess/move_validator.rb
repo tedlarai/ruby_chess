@@ -127,28 +127,34 @@ module RubyChess
 
     def capture_try?
       tile_empty = @board[@move[1]].nil?
+      !tile_empty
+    end
+
+    def enpassant_capture_try?
       piece = @board[@move[0]]
-      (!tile_empty) || (piece.class == Piece::Pawn && @move[1] == @enpassant)         
+      piece.class == Pieces::Pawn && @move[1] == @enpassant[0] && !@enpassant[0].nil?
     end
 
     def not_capturing_own_piece?(player, *args)
       if capture_try? &&  @board[@move[1]].color == player
         {validity: false, message: Messages.capturing_own_piece(@command)}
+      elsif enpassant_capture_try? && @board[@enpassant[1]].color == player
+        {validity: false, message: Messages.capturing_own_piece_enpassant(@command, @enpassant[1])}
       else
         default_response
       end
     end
 
     def piece_capable_of_move?(piece, *args)
-      unless capture_try? #no capture
-        unless piece.move_legal?(@move[0], @move[1])
-          {validity: false, message: Messages.piece_not_capable_of_move(piece, @command)}
+      if capture_try? || enpassant_capture_try? # capture
+        unless piece.capture_legal?(@move[0], @move[1])
+          {validity: false, message: Messages.piece_not_capable_of_capture(piece, @command)}
         else
           default_response
         end
-      else #capture
-        unless piece.capture_legal?(@move[0], @move[1])
-          {validity: false, message: Messages.piece_not_capable_of_capture(piece, @command)}
+      else # no capture
+        unless piece.move_legal?(@move[0], @move[1])
+          {validity: false, message: Messages.piece_not_capable_of_move(piece, @command)}
         else
           default_response
         end

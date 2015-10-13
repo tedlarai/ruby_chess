@@ -37,7 +37,7 @@ module Pieces
     def path(from, to)
       if (from[1]-to[1]).abs == 2 # 2 tile advance
         path_row = (to[1]-from[1])/2 + from[1]
-        [from[0], path_row]
+        [[from[0], path_row]]
       else # normal move
         []
       end

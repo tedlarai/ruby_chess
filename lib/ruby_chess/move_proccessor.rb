@@ -26,8 +26,12 @@ module RubyChess
       elsif @command == "0-0-0"
         @moves << @command
         long_castling
-      elsif # enpassant
-
+      elsif @move[1] == @enpassant[0] && @enpassant[1] # enpassant
+        @captured_pieces << @board[@enpassant[1]]
+        @moves << @command.sub("-", " ep ")
+        change_pieces_position
+        @board[@enpassant[1]] = nil
+        verify_and_update_enpassant_tile
       else # not castling nor enpassant
         if @board[@move[1]] # destination is occupied -> capture
           @captured_pieces << @board[@move[1]]
@@ -45,10 +49,11 @@ module RubyChess
 
     def verify_and_update_enpassant_tile
       piece = @board[@move[1]]
-      if piece.class == Pieces::Pawn || !piece.path(@move[0], @move[1]).empty?
-        @enpassant = path[0]
+      path = piece.path(@move[0], @move[1])
+      if (piece.class == Pieces::Pawn) && !path.empty?
+        @enpassant = [path[0], @move[1]]
       else
-        @enpassant = nil
+        @enpassant = [nil, nil]
       end
     end
 

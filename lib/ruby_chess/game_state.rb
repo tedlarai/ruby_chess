@@ -9,7 +9,7 @@ module RubyChess
       @moves = Array.new
       @captured_pieces = Array.new
       @active_player = "white"
-      @enpassant = nil
+      @enpassant = Array.new(2, nil)
       fill_board
     end
 
