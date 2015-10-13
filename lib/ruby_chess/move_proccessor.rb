@@ -6,6 +6,9 @@ module RubyChess
       proccessing_result = move_validity_with_message
       if proccessing_result[:validity] == true
         execute_move
+        if @promotion
+          proccessing_result[:message] = Messages.promotion(@command)
+        end
       end
       proccessing_result
     end
@@ -40,7 +43,12 @@ module RubyChess
         @moves << @command.sub("-", " - ")
         change_pieces_position
         verify_and_update_enpassant_tile
+        @promotion = verify_promotion
       end
+    end
+
+    def verify_promotion
+      (@board[@move[1]].class == Pieces::Pawn) && (@move[1][1] == 8 || @move[1][1] == 1)
     end
 
     def change_pieces_position
@@ -65,6 +73,20 @@ module RubyChess
     def long_castling
       @active_player == "white" ? row = 1 : row = 8
       @board[[5, row]], @board[[4, row]], @board[[3, row]], @board[[1, row]] = nil, @board[[1, row]], @board[[5, row]], nil
+    end
+
+    def proccess_promotion(promotion_command)
+      if promotion_command == "q"
+        piece = Pieces::Queen.new(@active_player)
+      elsif promotion_command == "r"
+        piece = Pieces::Rook.new(@active_player)
+      elsif promotion_command == "b"
+        piece = Pieces::Bishop.new(@active_player)
+      elsif promotion_command == "k"
+        piece = Pieces::Knight.new(@active_player)
+      end
+      @board[@move[1]] = piece
+      Messages.successful_promotion(piece)
     end
   end
 end

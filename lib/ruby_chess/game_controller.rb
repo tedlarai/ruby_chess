@@ -23,6 +23,9 @@ module RubyChess
           validity_with_message = @game_state.proccess_move(command)
           @message = validity_with_message[:message]
           if validity_with_message[:validity]
+            if @message == Messages.promotion(command)
+              promotion
+            end
             break
           else
             @ui.update_view(@message)
@@ -61,6 +64,20 @@ module RubyChess
           @message += Messages.check
         end
       end
+    end
+
+    def promotion
+      @ui.update_view(@message)
+      command = ""
+      loop do
+        command = gets.chomp
+        if command =~ /[qrbk]/
+          break
+        else
+          @ui.update_view(Messages.invalid_promotion(command))
+        end
+      end
+      @message = @game_state.proccess_promotion(command)
     end
 
     def save_game

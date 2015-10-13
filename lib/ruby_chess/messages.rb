@@ -95,5 +95,17 @@ module RubyChess
     def self.king_under_attack(command)
       invalid_move_phrase(command) + "Cannot castle, king under attack!"
     end
+
+    def self.promotion(command)
+      "Pawn promotion at #{command.split("-")[1]}.\n   Choose between (q)ueen, (r)ook, (b)ishop or (k)night."
+    end
+
+    def self.invalid_promotion(command)
+      "Invalid option \"#{command}\".\n   Choose between (q)ueen, (r)ook, (b)ishop or (k)night."
+    end
+
+    def self.successful_promotion(piece)
+      "Successfully promoted Pawn to #{piece.class.to_s[8..-1]}"
+    end
   end
 end
