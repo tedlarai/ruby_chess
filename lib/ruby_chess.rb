@@ -13,7 +13,8 @@ require "ruby_chess/pieces/bishop"
 require "ruby_chess/pieces/queen"
 require "ruby_chess/pieces/king"
 require "ruby_chess/pieces/pieces"
+require "ruby_chess/menu"
 
 
 include RubyChess
-GameController.new
+Menu.new.start

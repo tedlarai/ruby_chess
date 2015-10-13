@@ -1,5 +1,13 @@
 module RubyChess
   module Messages
+    def self.welcome
+      "Welcome to Ruby Chess"
+    end
+
+    def self.no_saved_file
+      "There is no saved file to load"
+    end
+
     def self.new_game
       "Game Started"
     end

@@ -4,14 +4,17 @@ module RubyChess
       @game_state = GameState.new
       @ui = UI.new(@game_state)
       @message = Messages.new_game
-      game_loop
+      @quit == false
     end
 
     def game_loop
       loop do
         @ui.update_view(@message)
         get_command
+        p @quit
+        return if @quit == true
         turn_results
+        return if @quit == true
         @game_state.switch_active_player
       end
     end
@@ -37,7 +40,8 @@ module RubyChess
           @ui.update_view(@message)
           next
         elsif command == "q"
-          exit
+          quit_to_menu
+          return
         else
           @message = Messages.invalid_command(command)
           @ui.update_view(@message)
@@ -81,12 +85,11 @@ module RubyChess
     end
 
     def save_game
-      # save the game
-      # update_view
+      File.open('saved_game', 'w+') {|f| f.write(Marshal.dump(self))}
     end
 
     def quit_to_menu
-      exit
+      @quit = true
     end
   end
 end
